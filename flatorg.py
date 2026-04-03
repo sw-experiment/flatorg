@@ -96,7 +96,9 @@ def copy_files(files: list[Path], dest_dir: Path, plan: bool = False) -> dict[st
             try:
                 category_dir.mkdir(parents=True, exist_ok=True)
             except OSError as e:
-                logging.error(f"Failed to create category directory {category_dir}: {e}")
+                logging.error(
+                    f"Failed to create category directory {category_dir}: {e}"
+                )
                 print(f"\nError: Failed to create category directory {category}: {e}")
                 raise
 
@@ -125,7 +127,9 @@ def copy_files(files: list[Path], dest_dir: Path, plan: bool = False) -> dict[st
 
     print()  # New line after progress
     operation_type = "planning" if plan else "copy"
-    logging.info(f"{operation_type.capitalize()} operation completed. Total files: {total_files}")
+    logging.info(
+        f"{operation_type.capitalize()} operation completed. Total files: {total_files}"
+    )
     return counts
 
 
@@ -149,7 +153,9 @@ def main():
 
     # Set up logging
     mode = "PLAN" if args.plan else "LIVE"
-    log_filename = f"file_organizer_{mode.lower()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    log_filename = (
+        f"file_organizer_{mode.lower()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    )
     logging.basicConfig(
         filename=log_filename,
         level=logging.INFO,
@@ -199,7 +205,9 @@ def main():
         try:
             args.destination.mkdir(parents=True, exist_ok=True)
         except OSError as e:
-            print(f"Error: Cannot create destination directory '{args.destination}': {e}")
+            print(
+                f"Error: Cannot create destination directory '{args.destination}': {e}"
+            )
             logging.error(f"Failed to create destination directory: {e}")
             return 1
 
@@ -235,7 +243,9 @@ def main():
 
     print("Done!")
 
-    completion_msg = f"File organizer {'plan' if args.plan else 'operation'} completed successfully"
+    completion_msg = (
+        f"File organizer {'plan' if args.plan else 'operation'} completed successfully"
+    )
     logging.info(completion_msg)
     return 0
 
