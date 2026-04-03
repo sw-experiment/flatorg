@@ -84,10 +84,11 @@ def count_files_in_dir(directory: Path) -> int:
 
 
 def copy_files(files: list[Path], dest_dir: Path, plan: bool = False) -> dict[str, int]:
-    """Copy files to destination with sequential numbering."""
-    counter = 1
+    """Copy files to destination with category prefix and sequential numbering."""
     total_files = len(files)
     counts = {"pics": 0, "vids": 0, "docs": 0}
+    category_counters = {"pics": 1, "vids": 1, "docs": 1}
+    category_prefixes = {"pics": "pic", "vids": "vid", "docs": "doc"}
 
     for i, filepath in enumerate(files, 1):
         category = get_file_category(filepath.name)
@@ -102,7 +103,9 @@ def copy_files(files: list[Path], dest_dir: Path, plan: bool = False) -> dict[st
                 print(f"\nError: Failed to create category directory {category}: {e}")
                 raise
 
-        new_filename = f"{counter:04d}_{filepath.name}"
+        prefix = category_prefixes[category]
+        counter = category_counters[category]
+        new_filename = f"{prefix}_{counter:04d}_{filepath.name}"
         new_filepath = category_dir / new_filename
 
         if plan:
@@ -123,7 +126,7 @@ def copy_files(files: list[Path], dest_dir: Path, plan: bool = False) -> dict[st
         # Progress indicator with current file
         progress = (i / total_files) * 100
         print(f"{progress:.1f}% - {filepath.name}", end="\r", flush=True)
-        counter += 1
+        category_counters[category] += 1
 
     print()  # New line after progress
     operation_type = "planning" if plan else "copy"
